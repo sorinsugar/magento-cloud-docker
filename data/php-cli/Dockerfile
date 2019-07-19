@@ -1,4 +1,4 @@
-FROM php:{%version%}-cli
+FROM php:{%version%}-cli-stretch
 
 ENV PHP_MEMORY_LIMIT 2G
 ENV MAGENTO_ROOT /app
@@ -30,15 +30,24 @@ ADD etc/php-cli.ini /usr/local/etc/php/conf.d/zz-magento.ini
 ADD etc/php-xdebug.ini /usr/local/etc/php/conf.d/zz-xdebug-settings.ini
 ADD etc/mail.ini /usr/local/etc/php/conf.d/zz-mail.ini
 
-VOLUME /root/.composer/cache
-# Get composer installed to /usr/local/bin/composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN groupadd -g 1000 www && useradd -g 1000 -u 1000 -d ${MAGENTO_ROOT} -s /bin/bash www
 
-ADD bin/* /usr/local/bin/
+RUN chown -R www:www /etc /usr/local/etc /var
 
 ADD docker-entrypoint.sh /docker-entrypoint.sh
 RUN ["chmod", "+x", "/docker-entrypoint.sh"]
 ENTRYPOINT ["/docker-entrypoint.sh"]
+
+ENV COMPOSER_ALLOW_SUPERUSER 1
+
+VOLUME /root/.composer/cache
+
+ADD etc/php-cli.ini /usr/local/etc/php/conf.d/zz-magento.ini
+
+# Get composer installed to /usr/local/bin/composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+ADD bin/* /usr/local/bin/
 
 RUN ["chmod", "+x", "/usr/local/bin/magento-installer"]
 RUN ["chmod", "+x", "/usr/local/bin/magento-command"]
@@ -47,6 +56,8 @@ RUN ["chmod", "+x", "/usr/local/bin/cloud-build"]
 RUN ["chmod", "+x", "/usr/local/bin/cloud-deploy"]
 RUN ["chmod", "+x", "/usr/local/bin/run-cron"]
 
+USER www:www
+VOLUME ${MAGENTO_ROOT}
 WORKDIR ${MAGENTO_ROOT}
 
 CMD ["bash"]

@@ -35,7 +35,6 @@ class Php extends Command
         'sendmail',
         'sudo',
         'cron',
-        'rsyslog',
         'mysql-client',
         'git',
         'redis-tools',
