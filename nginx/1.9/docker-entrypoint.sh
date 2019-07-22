@@ -10,6 +10,8 @@ VHOST_FILE="/etc/nginx/conf.d/default.conf"
 [ ! -z "${MAGENTO_RUN_MODE}" ] && sed -i "s/!MAGENTO_RUN_MODE!/${MAGENTO_RUN_MODE}/" $VHOST_FILE
 [ ! -z "${UPLOAD_MAX_FILESIZE}" ] && sed -i "s/!UPLOAD_MAX_FILESIZE!/${UPLOAD_MAX_FILESIZE}/" $VHOST_FILE
 
+echo 'T'
+
 # Check if the nginx syntax is fine, then launch.
 nginx -t
 

@@ -20,6 +20,7 @@ RUN chown -R www:www /etc/nginx /var/cache/nginx /var/run/nginx.pid
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN ["chmod", "+x", "/docker-entrypoint.sh"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
 
 WORKDIR ${MAGENTO_ROOT}
 
