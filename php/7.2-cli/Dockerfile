@@ -16,12 +16,14 @@ RUN apt-get update \
   sendmail \
   sudo \
   cron \
-  mysql-client \
+  mariadb-client \
   git \
   redis-tools \
   nano \
   unzip \
   vim \
+  python3 \
+  python3-pip \
   libbz2-dev \
   libjpeg62-turbo-dev \
   libpng-dev \
@@ -46,6 +48,10 @@ RUN apt-get update \
   libzip-dev \
   zip \
   && rm -rf /var/lib/apt/lists/*
+
+# Install PyYAML
+RUN pip3 install --upgrade setuptools \
+    && pip3 install pyyaml
 
 # Configure the gd library
 RUN docker-php-ext-configure \
@@ -185,6 +191,7 @@ RUN ["chmod", "+x", "/usr/local/bin/ece-command"]
 RUN ["chmod", "+x", "/usr/local/bin/cloud-build"]
 RUN ["chmod", "+x", "/usr/local/bin/cloud-deploy"]
 RUN ["chmod", "+x", "/usr/local/bin/run-cron"]
+RUN ["chmod", "+x", "/usr/local/bin/run-hooks"]
 
 RUN mkdir ${MAGENTO_ROOT} && chown www:www ${MAGENTO_ROOT}
 RUN mkdir ${MAGENTO_ROOT}/vendor && chown www:www ${MAGENTO_ROOT}/vendor

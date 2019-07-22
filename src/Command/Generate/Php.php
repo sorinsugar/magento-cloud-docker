@@ -35,12 +35,14 @@ class Php extends Command
         'sendmail',
         'sudo',
         'cron',
-        'mysql-client',
+        'mariadb-client',
         'git',
         'redis-tools',
         'nano',
         'unzip',
         'vim',
+        'python3',
+        'python3-pip',
     ];
 
     private const PHP_EXTENSIONS_ENABLED_BY_DEFAULT = [

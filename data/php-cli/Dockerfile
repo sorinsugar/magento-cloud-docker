@@ -14,6 +14,10 @@ RUN apt-get update \
   {%packages%} \
   && rm -rf /var/lib/apt/lists/*
 
+# Install PyYAML
+RUN pip3 install --upgrade setuptools \
+    && pip3 install pyyaml
+
 # Configure the gd library
 {%docker-php-ext-configure%}
 
@@ -55,6 +59,7 @@ RUN ["chmod", "+x", "/usr/local/bin/ece-command"]
 RUN ["chmod", "+x", "/usr/local/bin/cloud-build"]
 RUN ["chmod", "+x", "/usr/local/bin/cloud-deploy"]
 RUN ["chmod", "+x", "/usr/local/bin/run-cron"]
+RUN ["chmod", "+x", "/usr/local/bin/run-hooks"]
 
 RUN mkdir ${MAGENTO_ROOT} && chown www:www ${MAGENTO_ROOT}
 RUN mkdir ${MAGENTO_ROOT}/vendor && chown www:www ${MAGENTO_ROOT}/vendor
