@@ -17,6 +17,8 @@ fi
 
 echo "Installing dependencies."
 
+chown -R www:www $MAGENTO_ROOT
+
 composer --working-dir=$MAGENTO_ROOT install --no-suggest --no-ansi --no-interaction --no-progress --prefer-dist
 
 echo "Running \"build\" hook."
