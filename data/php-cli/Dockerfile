@@ -1,3 +1,5 @@
+{%note%}
+
 FROM php:{%version%}-cli-stretch
 
 ENV PHP_MEMORY_LIMIT 2G
@@ -61,23 +63,9 @@ RUN ["chmod", "+x", "/usr/local/bin/cloud-deploy"]
 RUN ["chmod", "+x", "/usr/local/bin/run-cron"]
 RUN ["chmod", "+x", "/usr/local/bin/run-hooks"]
 
-RUN mkdir ${MAGENTO_ROOT} && chown www:www ${MAGENTO_ROOT}
-RUN mkdir ${MAGENTO_ROOT}/vendor && chown www:www ${MAGENTO_ROOT}/vendor
-RUN mkdir ${MAGENTO_ROOT}/generated && chown www:www ${MAGENTO_ROOT}/generated
-RUN mkdir ${MAGENTO_ROOT}/var && chown www:www ${MAGENTO_ROOT}/var
-RUN mkdir ${MAGENTO_ROOT}/setup && chown www:www ${MAGENTO_ROOT}/setup
-RUN mkdir -p ${MAGENTO_ROOT}/app/etc && chown www:www ${MAGENTO_ROOT}/app/etc
-RUN mkdir -p ${MAGENTO_ROOT}/pub/static && chown www:www ${MAGENTO_ROOT}/pub/static
-RUN mkdir -p ${MAGENTO_ROOT}/pub/media && chown www:www ${MAGENTO_ROOT}/pub/media
+{%volumes_cmd%}
 
-VOLUME ${MAGENTO_ROOT}
-VOLUME ${MAGENTO_ROOT}/vendor
-VOLUME ${MAGENTO_ROOT}/generated
-VOLUME ${MAGENTO_ROOT}/var
-VOLUME ${MAGENTO_ROOT}/setup
-VOLUME ${MAGENTO_ROOT}/app/etc
-VOLUME ${MAGENTO_ROOT}/pub/static
-VOLUME ${MAGENTO_ROOT}/pub/media
+{%volumes_def%}
 
 USER www:www
 
