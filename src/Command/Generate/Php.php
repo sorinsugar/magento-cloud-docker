@@ -69,15 +69,15 @@ class Php extends Command
         'zip',
     ];
 
-    const DOCKERFILE = 'Dockerfile';
-    const EXTENSION_OS_DEPENDENCIES = 'extension_os_dependencies';
-    const EXTENSION_PACKAGE_NAME = 'extension_package_name';
-    const EXTENSION_TYPE = 'extension_type';
-    const EXTENSION_TYPE_PECL = 'extension_type_pecl';
-    const EXTENSION_TYPE_CORE = 'extension_type_core';
-    const EXTENSION_TYPE_INSTALLATION_SCRIPT = 'extension_type_installation_script';
-    const EXTENSION_CONFIGURE_OPTIONS = 'extension_configure_options';
-    const EXTENSION_INSTALLATION_SCRIPT = 'extension_installation_script';
+    private const DOCKERFILE = 'Dockerfile';
+    private const EXTENSION_OS_DEPENDENCIES = 'extension_os_dependencies';
+    private const EXTENSION_PACKAGE_NAME = 'extension_package_name';
+    private const EXTENSION_TYPE = 'extension_type';
+    private const EXTENSION_TYPE_PECL = 'extension_type_pecl';
+    private const EXTENSION_TYPE_CORE = 'extension_type_core';
+    private const EXTENSION_TYPE_INSTALLATION_SCRIPT = 'extension_type_installation_script';
+    private const EXTENSION_CONFIGURE_OPTIONS = 'extension_configure_options';
+    private const EXTENSION_INSTALLATION_SCRIPT = 'extension_installation_script';
 
     /**
      * @var Filesystem
@@ -293,19 +293,19 @@ class Php extends Command
                 '{%version%}' => $phpVersion,
                 '{%packages%}' => implode(" \\\n  ", array_unique($packages)),
                 '{%docker-php-ext-configure%}' => implode(PHP_EOL, $phpExtCoreConfigOptions),
-                '{%docker-php-ext-install%}' => !empty($phpExtCore)
+                '{%docker-php-ext-install%}' => $phpExtCore
                     ? "RUN docker-php-ext-install -j$(nproc) \\\n  " . implode(" \\\n  ", $phpExtCore)
                     : '',
-                '{%php-pecl-extensions%}' => !empty($phpExtPecl)
+                '{%php-pecl-extensions%}' => $phpExtPecl
                     ? "RUN pecl install -o -f \\\n  " . implode(" \\\n  ", $phpExtPecl)
                     : '',
-                '{%docker-php-ext-enable%}' => !empty($phpExtList)
+                '{%docker-php-ext-enable%}' => $phpExtList
                     ? "RUN docker-php-ext-enable \\\n  " . implode(" \\\n  ", $phpExtList)
                     : '',
-                '{%installation_scripts%}' => !empty($phpExtInstScripts)
+                '{%installation_scripts%}' => $phpExtInstScripts
                     ? implode(PHP_EOL, $phpExtInstScripts)
                     : '',
-                '{%env_php_extensions%}' => !(empty($phpExtEnabledDefault))
+                '{%env_php_extensions%}' => $phpExtEnabledDefault
                     ? 'ENV PHP_EXTENSIONS ' . implode(' ', $phpExtEnabledDefault)
                     : '',
                 '{%volumes_cmd%}' => rtrim($volumesCmd),
