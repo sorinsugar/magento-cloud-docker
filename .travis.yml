@@ -1,0 +1,18 @@
+dist: trusty
+
+git:
+  depth: false
+
+language: php
+php:
+  - '7.1'
+  - '7.2'
+  - '7.3'
+
+install: composer update
+
+script:
+  - ./vendor/bin/phpstan analyse -c ./tests/static/phpstan.neon
+  - ./vendor/bin/phpcs ./src --standard=./tests/static/phpcs-ruleset.xml -p -n
+  - ./vendor/bin/phpmd ./src xml ./tests/static/phpmd-ruleset.xml
+  - ./vendor/bin/phpunit --configuration ./tests/unit

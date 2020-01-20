@@ -1,2 +1,6 @@
-.idea
-/vendor/
+.DS_Store
+/.idea
+/vendor
+/composer.phar
+/composer.lock
+/auth.json
